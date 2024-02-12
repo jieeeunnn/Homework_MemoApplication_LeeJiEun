@@ -63,7 +63,7 @@ class ModifyActivity : AppCompatActivity() {
 
         binding.apply {
             memo.title = modifyTitle.text.toString()
-            memo.content = modifyTitle.text.toString()
+            memo.content = modifyContent.text.toString()
         }
     }
 }
