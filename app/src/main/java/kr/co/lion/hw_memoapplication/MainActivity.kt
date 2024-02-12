@@ -3,14 +3,15 @@ package kr.co.lion.hw_memoapplication
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.hw_memoapplication.databinding.ActivityMainBinding
 import kr.co.lion.hw_memoapplication.databinding.MemoListBinding
 
@@ -79,12 +80,15 @@ class MainActivity : AppCompatActivity() {
                 adapter = RecyclerViewAdapter()
                 layoutManager = LinearLayoutManager(this@MainActivity)
 
-                // 데코레이션
-                val deco = MaterialDividerItemDecoration(
-                    this@MainActivity,
-                    MaterialDividerItemDecoration.VERTICAL
-                )
-                addItemDecoration(deco)
+                // 아이템 사이 간격 조정
+                val spacingInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+
+                mainRecyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        outRect.bottom = spacingInPixels
+                    }
+                })
+
             }
         }
     }
