@@ -32,6 +32,12 @@ class MainActivity : AppCompatActivity() {
         Log.e("memoData", "setView 호출")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        binding.mainRecyclerView.adapter?.notifyDataSetChanged()
+    }
+
     // 툴바 설정
     fun setToolbar() {
         binding.apply {
@@ -59,13 +65,7 @@ class MainActivity : AppCompatActivity() {
         inputActivityLauncher = registerForActivityResult(contract1) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 // MemoList에 변화가 있을 때 어댑터 갱신
-                val adapter = binding.mainRecyclerView?.adapter
-                if (adapter != null) {
-                    Log.e("memoData", "contract1 리사이클러뷰 갱신 ")
-                    adapter.notifyDataSetChanged()
-                } else {
-                    Log.e("memoData", "contract1 리사이클러뷰 어댑터가 null입니다.")
-                }
+                binding.mainRecyclerView.adapter?.notifyDataSetChanged()
             }
         }
 

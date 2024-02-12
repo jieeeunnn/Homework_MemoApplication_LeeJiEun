@@ -1,6 +1,6 @@
 package kr.co.lion.hw_memoapplication
 
-import android.app.Instrumentation.ActivityResult
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +10,7 @@ import kr.co.lion.hw_memoapplication.databinding.ActivityShowBinding
 
 class ShowActivity : AppCompatActivity() {
     lateinit var binding: ActivityShowBinding
-    lateinit var modifyActivityLauncher : ActivityResultLauncher<Intent>
+    lateinit var modifyActivityLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +60,14 @@ class ShowActivity : AppCompatActivity() {
 
     fun setLauncher() {
         val contract1 = ActivityResultContracts.StartActivityForResult()
-        modifyActivityLauncher = registerForActivityResult(contract1) {
-
+        modifyActivityLauncher = registerForActivityResult(contract1) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val position = intent.getIntExtra("position", 0)
+                // 수정된 메모의 위치를 받아와서 해당 위치의 메모를 가져와서 화면에 반영
+                val updatedMemo = Util.memoList[position]
+                binding.showTitle.setText(updatedMemo.title)
+                binding.showContent.setText(updatedMemo.content)
+            }
         }
     }
 
