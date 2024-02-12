@@ -36,7 +36,7 @@ class ShowActivity : AppCompatActivity() {
                 }
 
                 setOnMenuItemClickListener {
-                    when(it.itemId) {
+                    when (it.itemId) {
                         // 수정
                         R.id.menu_item_modify -> {
                             val modifyIntent = Intent(this@ShowActivity, ModifyActivity::class.java)

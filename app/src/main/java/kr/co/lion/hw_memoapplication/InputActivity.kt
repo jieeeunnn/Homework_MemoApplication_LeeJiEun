@@ -3,13 +3,12 @@ package kr.co.lion.hw_memoapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import kr.co.lion.hw_memoapplication.databinding.ActivityInputBinding
 import java.time.LocalDate
 
 class InputActivity : AppCompatActivity() {
-    lateinit var binding : ActivityInputBinding
+    lateinit var binding: ActivityInputBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,7 +31,7 @@ class InputActivity : AppCompatActivity() {
                 }
 
                 setOnMenuItemClickListener {
-                    when(it.itemId) {
+                    when (it.itemId) {
                         R.id.menu_item_done -> {
                             checkInput()
                         }
@@ -48,7 +47,7 @@ class InputActivity : AppCompatActivity() {
         binding.apply {
             val title = inputTitleEdit.text.toString()
             if (title.trim().isEmpty()) {
-                Toast.makeText(this@InputActivity,"제목을 입력해주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@InputActivity, "제목을 입력해주세요", Toast.LENGTH_LONG).show()
             }
 
             val content = inputContentEdit.text.toString()
@@ -56,7 +55,7 @@ class InputActivity : AppCompatActivity() {
                 Toast.makeText(this@InputActivity, "내용을 입력해주세요", Toast.LENGTH_LONG).show()
             }
 
-            if(title.isNotEmpty() && content.isNotEmpty()) {
+            if (title.isNotEmpty() && content.isNotEmpty()) {
                 addMemoData()
                 val resultIntent = Intent()
                 setResult(RESULT_OK, resultIntent)
@@ -74,12 +73,6 @@ class InputActivity : AppCompatActivity() {
             memo.date = LocalDate.now()
 
             Util.memoList.add(memo)
-
-            Log.e("memoData", "메모 입력 저장 : ${memo.title}, ${memo.content}, ${memo.date}")
-            // 로그로 MemoList 내용 출력
-            for (memoItem in Util.memoList) {
-                Log.d("memoData", "Title: ${memoItem.title}, Content: ${memoItem.content}, Date: ${memoItem.date}")
-            }
         }
     }
 }

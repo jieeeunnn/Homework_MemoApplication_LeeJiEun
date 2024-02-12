@@ -5,10 +5,10 @@ import android.os.Parcelable
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-open class Memo() : Parcelable{
-    var title : String = ""
-    var content : String = ""
-    lateinit var date : LocalDate
+open class Memo() : Parcelable {
+    var title: String = ""
+    var content: String = ""
+    lateinit var date: LocalDate
 
     constructor(parcel: Parcel) : this() {
         title = parcel.readString().toString()

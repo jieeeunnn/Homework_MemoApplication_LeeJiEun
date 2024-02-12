@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,9 +15,9 @@ import kr.co.lion.hw_memoapplication.databinding.ActivityMainBinding
 import kr.co.lion.hw_memoapplication.databinding.MemoListBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding : ActivityMainBinding
-    lateinit var inputActivityLauncher : ActivityResultLauncher<Intent>
-    lateinit var showActivityLauncher : ActivityResultLauncher<Intent>
+    lateinit var binding: ActivityMainBinding
+    lateinit var inputActivityLauncher: ActivityResultLauncher<Intent>
+    lateinit var showActivityLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         setLauncher()
         setToolbar()
         setView()
-        Log.e("memoData", "setView 호출")
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -45,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                 inflateMenu(R.menu.main_menu)
 
                 setOnMenuItemClickListener {
-                    when(it.itemId) {
+                    when (it.itemId) {
                         R.id.menu_item_edit_memo -> {
                             // 메모 작성 화면으로 이동
                             val intent = Intent(this@MainActivity, InputActivity::class.java)
@@ -80,7 +78,6 @@ class MainActivity : AppCompatActivity() {
             mainRecyclerView.apply {
                 adapter = RecyclerViewAdapter()
                 layoutManager = LinearLayoutManager(this@MainActivity)
-                Log.e("memoData", "리사이클러뷰 호출")
 
                 // 데코레이션
                 val deco = MaterialDividerItemDecoration(
@@ -92,9 +89,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MemoViewHolder>(){
-        inner class MemoViewHolder(memoBinding : MemoListBinding) : RecyclerView.ViewHolder(memoBinding.root) {
-            val memoBinding : MemoListBinding
+    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MemoViewHolder>() {
+        inner class MemoViewHolder(memoBinding: MemoListBinding) :
+            RecyclerView.ViewHolder(memoBinding.root) {
+            val memoBinding: MemoListBinding
 
             init {
                 this.memoBinding = memoBinding
@@ -120,8 +118,6 @@ class MainActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
             val memoList = Util.memoList
             val memo = memoList[position]
-
-            Log.e("memoData", "리사이클러뷰 position : ${memo}")
 
             holder.memoBinding.memoListTitle.text = memo.title
             holder.memoBinding.memoListDate.text = memo.date.toString()

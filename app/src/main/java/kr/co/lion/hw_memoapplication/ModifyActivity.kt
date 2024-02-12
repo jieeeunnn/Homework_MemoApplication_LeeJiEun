@@ -7,7 +7,7 @@ import android.os.Bundle
 import kr.co.lion.hw_memoapplication.databinding.ActivityModifyBinding
 
 class ModifyActivity : AppCompatActivity() {
-    lateinit var binding : ActivityModifyBinding
+    lateinit var binding: ActivityModifyBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,7 +30,7 @@ class ModifyActivity : AppCompatActivity() {
                 }
 
                 setOnMenuItemClickListener {
-                    when(it.itemId) {
+                    when (it.itemId) {
                         R.id.menu_item_modify_done -> {
                             modifyMemo()
 
