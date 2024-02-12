@@ -3,6 +3,7 @@ package kr.co.lion.hw_memoapplication
 import android.os.Parcel
 import android.os.Parcelable
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 open class Memo() : Parcelable{
     var title : String = ""
@@ -12,6 +13,7 @@ open class Memo() : Parcelable{
     constructor(parcel: Parcel) : this() {
         title = parcel.readString().toString()
         content = parcel.readString().toString()
+        date = LocalDate.parse(parcel.readString().toString(), DateTimeFormatter.ISO_LOCAL_DATE)
     }
 
     override fun describeContents(): Int {
@@ -21,6 +23,7 @@ open class Memo() : Parcelable{
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
         parcel.writeString(content)
+        parcel.writeString(date.format(DateTimeFormatter.ISO_LOCAL_DATE))
     }
 
     companion object CREATOR : Parcelable.Creator<Memo> {

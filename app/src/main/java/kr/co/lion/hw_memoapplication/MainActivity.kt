@@ -1,15 +1,25 @@
 package kr.co.lion.hw_memoapplication
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import kr.co.lion.hw_memoapplication.databinding.ActivityMainBinding
+import kr.co.lion.hw_memoapplication.databinding.MemoListBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding : ActivityMainBinding
     lateinit var inputActivityLauncher : ActivityResultLauncher<Intent>
+    lateinit var showActivityLauncher : ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -18,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         setLauncher()
         setToolbar()
+        setView()
+        Log.e("memoData", "setView 호출")
     }
 
     // 툴바 설정
@@ -41,10 +53,84 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 런처 설정
+    @SuppressLint("NotifyDataSetChanged")
     fun setLauncher() {
         val contract1 = ActivityResultContracts.StartActivityForResult()
-        inputActivityLauncher = registerForActivityResult(contract1) {
+        inputActivityLauncher = registerForActivityResult(contract1) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // MemoList에 변화가 있을 때 어댑터 갱신
+                val adapter = binding.mainRecyclerView?.adapter
+                if (adapter != null) {
+                    Log.e("memoData", "contract1 리사이클러뷰 갱신 ")
+                    adapter.notifyDataSetChanged()
+                } else {
+                    Log.e("memoData", "contract1 리사이클러뷰 어댑터가 null입니다.")
+                }
+            }
+        }
 
+        val contract2 = ActivityResultContracts.StartActivityForResult()
+        showActivityLauncher = registerForActivityResult(contract2) {
+
+        }
+    }
+
+    fun setView() {
+        binding.apply {
+            mainRecyclerView.apply {
+                adapter = RecyclerViewAdapter()
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                Log.e("memoData", "리사이클러뷰 호출")
+
+                // 데코레이션
+                val deco = MaterialDividerItemDecoration(
+                    this@MainActivity,
+                    MaterialDividerItemDecoration.VERTICAL
+                )
+                addItemDecoration(deco)
+            }
+        }
+    }
+
+    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.MemoViewHolder>(){
+        inner class MemoViewHolder(memoBinding : MemoListBinding) : RecyclerView.ViewHolder(memoBinding.root) {
+            val memoBinding : MemoListBinding
+
+            init {
+                this.memoBinding = memoBinding
+
+                this.memoBinding.root.layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
+            val memoBinding = MemoListBinding.inflate(layoutInflater)
+            val viewHolderMemo = MemoViewHolder(memoBinding)
+
+            return viewHolderMemo
+        }
+
+        override fun getItemCount(): Int {
+            return Util.memoList.size
+        }
+
+        override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
+            val memoList = Util.memoList
+            val memo = memoList[position]
+
+            Log.e("memoData", "리사이클러뷰 position : ${memo}")
+
+            holder.memoBinding.memoListTitle.text = memo.title
+            holder.memoBinding.memoListDate.text = memo.date.toString()
+
+            holder.memoBinding.root.setOnClickListener {
+                val intent = Intent(this@MainActivity, ShowActivity::class.java)
+                intent.putExtra("position", position)
+                showActivityLauncher.launch(intent)
+            }
         }
     }
 }
